@@ -1,16 +1,30 @@
 from tkinter import*
 import random
-#funciones del juego
-#funcio para modificar
-#def modificar_imagen(posicion):
-   # c.itemconfig(modificar_imagen, extent= posicion)
-
-
 #variables globales
 #------------------
-
 BASE=460
 ALTURA=220
+radio = 10
+desplazamiento_x = 1
+desplazamiento_y = 0
+intervalo = 2
+
+centro_x = random.randint(radio, BASE)
+centro_y = random.randint(radio, ALTURA)
+
+def mover_carro():
+    global desplazamiento_x, desplazamiento_y
+    
+    x0, y0, x1, y1 = c.coords(carr)
+    if x0 < 0 or x1 > BASE: 
+        desplazamiento_x = -desplazamiento_x
+    if y0 < 0 or y1 > ALTURA: 
+        desplazamiento_y = -desplazamiento_y
+    c.move(carro1, desplazamiento_x, desplazamiento_y)
+    ventana_principal.after(intervalo, mover_carro)
+
+
+
 
 
 #----------------------
@@ -49,23 +63,13 @@ rect_4 = c.create_rectangle(BASE/2+20,BASE/2-120,180,ALTURA-120,fill="white", ou
 rect_3 = c.create_rectangle(BASE/2+40,ALTURA/2-10,BASE/2+150,ALTURA/2,fill="white", outline="white")
 # img
 carro1 = PhotoImage(file="img/rayo.png")
-car = c.create_image(BASE/2-185, 340/2, image = carro1)
+carr = c.create_image(BASE/2-185, 340/2, image = carro1)
+
+ 
+#(BASE/2-185, 340/2, image = carro1)
 
 carro2 = PhotoImage(file="img/flo (1).png")
 carr = c.create_image(BASE/2-185, 110/2, image = carro2)
-
-
-velocidad_x1= random.randint(2,4)
-velocidad_x2= random.randint(2,4)
-intervalo=90
-
-def mover_carro():
-    global velocidad_x1
-    c.move(carro1, velocidad_x1,0)
-    frame_graficacion.after(intervalo,mover_carro)
-    c.move(carro2,velocidad_x2,0)
-    frame_graficacion.after(intervalo, mover_carro)
-
 
 # tectos de inicio y fin
 texto_1 = c.create_text(BASE/2+10, ALTURA-205, anchor="center", text="carrerass!", font=("Arial",25, "bold"),fill="deep pink",
@@ -91,8 +95,6 @@ activefill="cyan")
 texto_n = c.create_text(BASE/2+175, ALTURA-90, anchor="center", text="n", font=("Arial",25, "bold"),fill="white",
 activefill="cyan")
 
-
-
 #--------------------
 #frame de controles
 #-------------------
@@ -101,19 +103,11 @@ frame_controles = Frame(ventana_principal)
 frame_controles.config(bg="green", width=480, heigh=230)
 frame_controles.place(x=10, y=260)
 
-
 #boton para datos academicos
 bandera=PhotoImage(file="img/bandera (2).png")
-bt_bandera =Button(ventana_principal)
+bt_bandera =Button(ventana_principal, command=mover_carro)
 bt_bandera.config(image=bandera, width=100, height=100)
 bt_bandera.place(x=200, y=270)
-def mover_carro():
-    global velocidad_x1
-    c.move(carro1, velocidad_x1,0)
-    frame_graficacion.after(intervalo,mover_carro)
-    c.move(carro2,velocidad_x2,0)
-    frame_graficacion.after(intervalo, mover_carro)
-
 
 #desplegar ventana
 ventana_principal.mainloop()
